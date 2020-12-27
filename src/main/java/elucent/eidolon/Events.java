@@ -167,11 +167,12 @@ public class Events {
 
     @SubscribeEvent
     public void registerSpawns(BiomeLoadingEvent ev) {
+    	if (ev.getCategory() == Biome.Category.NETHER) {
+    		ev.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(Registry.ZOMBIE_BRUTE.get(), Config.ZOMBIE_BRUTE_SPAWN_WEIGHT.get(), 1, 2));
+    	}
+    	
         if (ev.getCategory() != Biome.Category.MUSHROOM && ev.getCategory() != Biome.Category.OCEAN && ev.getCategory() != Biome.Category.NETHER && ev.getCategory() != Biome.Category.THEEND) {
-            ev.getSpawns().withSpawner(EntityClassification.MONSTER,
-                new MobSpawnInfo.Spawners(Registry.WRAITH.get(), Config.WRAITH_SPAWN_WEIGHT.get(), 1, 2));
-            ev.getSpawns().withSpawner(EntityClassification.MONSTER,
-                new MobSpawnInfo.Spawners(Registry.ZOMBIE_BRUTE.get(), Config.ZOMBIE_BRUTE_SPAWN_WEIGHT.get(), 1, 2));
+        	ev.getSpawns().withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(Registry.WRAITH.get(), Config.WRAITH_SPAWN_WEIGHT.get(), 1, 2));
         }
     }
 

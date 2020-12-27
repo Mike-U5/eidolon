@@ -29,16 +29,20 @@ public class EntityUtil {
     	final Item legs = entity.getItemStackFromSlot(EquipmentSlotType.LEGS).getItem();
     	final Item feet = entity.getItemStackFromSlot(EquipmentSlotType.FEET).getItem();
     	
-    	if (head instanceof WarlockRobesItem) {
+    	if (head instanceof WarlockRobesItem || head == ForeignItems.IRONWOOD_HELMET) {
     		modifier -= 0.12F;
     	}
     	
-    	if (chest instanceof WarlockRobesItem) {
+    	if (chest instanceof WarlockRobesItem || chest == ForeignItems.IRONWOOD_CHESTPLATE) {
     		modifier -= 0.24F;
     	}
     	
-    	if (feet instanceof WarlockRobesItem) {
-    		modifier -= 0.08F;
+    	if (legs == ForeignItems.IRONWOOD_LEGGINGS) {
+    		modifier -= 0.16F;
+    	}
+    	
+    	if (feet instanceof WarlockRobesItem || feet == ForeignItems.IRONWOOD_BOOTS) {
+    		modifier -= 0.12F;
     	}
     	
     	

@@ -19,7 +19,6 @@ import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -49,8 +48,14 @@ public class ZombieBruteEntity extends MonsterEntity {
             .createMutableAttribute(Attributes.MAX_HEALTH, 40.0D)
             .createMutableAttribute(Attributes.MOVEMENT_SPEED, (double)0.28F)
             .createMutableAttribute(Attributes.ATTACK_DAMAGE, 5.0D)
+            .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.4D)
+            .createMutableAttribute(Attributes.ATTACK_KNOCKBACK, 3.0D)
             .createMutableAttribute(Attributes.ARMOR, 6.0D)
             .create();
+    }
+    
+    public boolean isImmuneToFire() {
+    	return true;
     }
 
     protected void applyEntityAI() {

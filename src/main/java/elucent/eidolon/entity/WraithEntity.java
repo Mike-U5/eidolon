@@ -1,6 +1,7 @@
 package elucent.eidolon.entity;
 
 import elucent.eidolon.Registry;
+import elucent.eidolon.util.EntityUtil;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -12,12 +13,14 @@ import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
-import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
@@ -41,16 +44,20 @@ public class WraithEntity extends MonsterEntity {
 
     @Override
     public boolean attackEntityAsMob(Entity target) {
-        // if (flag && entity instanceof LivingEntity) {
-        //     ((LivingEntity)entity).addPotionEffect(new EffectInstance(Registry.CHILLED_EFFECT.get(), 100 + (int)(100 * world.getDifficulty().getId())));
-        // }
-        for(LivingEntity livingentity : this.world.getEntitiesWithinAABB(LivingEntity.class, target.getBoundingBox().grow(1.25D, 0.75D, 1.25D))) {
-            if (livingentity != this && livingentity != target && !this.isOnSameTeam(livingentity) && (!(livingentity instanceof ArmorStandEntity) || !((ArmorStandEntity)livingentity).hasMarker()) && this.getDistanceSq(livingentity) < 9.0D) {
-               livingentity.attackEntityFrom(DamageSource.MAGIC, 12F);
-            }
-        }
+    	boolean flag = target.attackEntityFrom(DamageSource.MAGIC, 5F);
+    	
+        if (flag && target instanceof LivingEntity) {
+        	final int chillTime = (int) (400 * EntityUtil.getWardingMod((LivingEntity)target));
+        	((LivingEntity)target).addPotionEffect(new EffectInstance(Registry.CHILLED_EFFECT.get(), chillTime));
 
-        return false;
+        	for (int i = 0; i < 50; ++i) {
+                world.addParticle(ParticleTypes.WITCH, this.getPosX() + rand.nextGaussian(), this.getBoundingBox().maxY + rand.nextGaussian() * (double)0.13F, this.getPosZ() + rand.nextGaussian(), 0.0D, 0.0D, 0.0D);
+            }
+        	
+        	world.playSound(null, this.getPosition(), Registry.WRAITH_SCREAM.get(), SoundCategory.HOSTILE, 1F, 1F);
+        }
+    	
+        return flag;
     }
 
     protected void registerGoals() {
@@ -62,9 +69,8 @@ public class WraithEntity extends MonsterEntity {
         return MonsterEntity.func_234295_eP_()
             .createMutableAttribute(Attributes.MAX_HEALTH, 20.0D)
             .createMutableAttribute(Attributes.MOVEMENT_SPEED, (double)0.2F)
-            .createMutableAttribute(Attributes.ATTACK_DAMAGE, 4.0D)
+            .createMutableAttribute(Attributes.ATTACK_DAMAGE, 0.0D)
             .createMutableAttribute(Attributes.ARMOR, 0.0D)
-            .createMutableAttribute(Attributes.ATTACK_SPEED, 0.5D)
             .create();
     }
 
@@ -84,16 +90,16 @@ public class WraithEntity extends MonsterEntity {
     public void livingTick() {
         if (this.world.isDaytime() && !this.world.isRemote) {
             float f = this.getBrightness();
-            BlockPos blockpos = this.getRidingEntity() instanceof BoatEntity ? (new BlockPos(this.getPosX(), (double) Math.round(this.getPosY()), this.getPosZ())).up() : new BlockPos(this.getPosX(), (double) Math.round(this.getPosY()), this.getPosZ());
+            final BlockPos blockpos = this.getRidingEntity() instanceof BoatEntity ? (new BlockPos(this.getPosX(), (double) Math.round(this.getPosY()), this.getPosZ())).up() : new BlockPos(this.getPosX(), (double) Math.round(this.getPosY()), this.getPosZ());
             if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.world.canSeeSky(blockpos)) {
                 this.setFire(8);
             }
         }
 
         // hover over water
-        FluidState below = world.getBlockState(getPositionUnderneath()).getFluidState();
+        final FluidState below = world.getBlockState(getPositionUnderneath()).getFluidState();
         if (!below.isEmpty()) {
-            Vector3d motion = getMotion();
+            final Vector3d motion = getMotion();
             this.setOnGround(true);
             if (getPosY() + motion.y < getPositionUnderneath().getY() + below.getHeight()) {
                 setNoGravity(true);
@@ -108,16 +114,12 @@ public class WraithEntity extends MonsterEntity {
 
         // slow fall
         this.fallDistance = 0;
-        Vector3d vector3d = this.getMotion();
+        final Vector3d vector3d = this.getMotion();
         if (!this.onGround && vector3d.y < 0.0D) {
             this.setMotion(vector3d.mul(1.0D, 0.6D, 1.0D));
         }
 
         super.livingTick();
-    }
-    
-    public SoundEvent getScreamSound() {
-    	return Registry.WRAITH_DEATH.get();
     }
 
     @Override

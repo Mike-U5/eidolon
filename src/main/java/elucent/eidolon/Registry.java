@@ -123,6 +123,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class Registry {
     static Map<String, Block> BLOCK_MAP = new HashMap<>();
@@ -218,6 +219,7 @@ public class Registry {
         BRUTE_LIVING = addSound("brute_living"),
         BRUTE_HURT = addSound("brute_hurt"),
         BRUTE_DEATH = addSound("brute_death"),
+        WRAITH_SCREAM = addSound("wraith_scream"),
 		WRAITH_LIVING = addSound("wraith_living"),
         WRAITH_HURT = addSound("wraith_hurt"),
         WRAITH_DEATH = addSound("wraith_death"),
