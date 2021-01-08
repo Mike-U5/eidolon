@@ -1,16 +1,13 @@
 package elucent.eidolon.gui.jei;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.mojang.blaze3d.matrix.MatrixStack;
-
 import elucent.eidolon.Eidolon;
 import elucent.eidolon.Registry;
 import elucent.eidolon.codex.CodexGui;
 import elucent.eidolon.ritual.IRequirement;
 import elucent.eidolon.ritual.ItemRequirement;
 import elucent.eidolon.ritual.MultiItemSacrifice;
+import elucent.eidolon.ritual.RitualRegistry;
 import elucent.eidolon.util.StackUtil;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -23,6 +20,9 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RitualCategory implements IRecipeCategory<RecipeWrappers.RitualRecipe> {
     static final ResourceLocation UID = new ResourceLocation(Eidolon.MODID, "ritual");
@@ -62,6 +62,7 @@ public class RitualCategory implements IRecipeCategory<RecipeWrappers.RitualReci
     public void setIngredients(RecipeWrappers.RitualRecipe wrapper, IIngredients ingredients) {
         List<Ingredient> inputs = new ArrayList<>();
         Object sacrifice = wrapper.sacrifice;
+        if (wrapper.page == null) wrapper.page = RitualRegistry.getDefaultPage(wrapper.ritual, wrapper.sacrifice);
         int slot = 0;
         for (IRequirement r : wrapper.ritual.getRequirements()) {
             if (r instanceof ItemRequirement)

@@ -1,7 +1,5 @@
 package elucent.eidolon.ritual;
 
-import java.util.List;
-
 import elucent.eidolon.network.Networking;
 import elucent.eidolon.network.RitualConsumePacket;
 import net.minecraft.block.Block;
@@ -11,6 +9,8 @@ import net.minecraft.tags.ITag;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class FocusItemRequirement implements IRequirement {
     Object match;

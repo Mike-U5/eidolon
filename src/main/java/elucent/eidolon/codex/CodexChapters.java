@@ -1,8 +1,6 @@
 package elucent.eidolon.codex;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import elucent.eidolon.Eidolon;
 import elucent.eidolon.Registry;
 import elucent.eidolon.capability.Facts;
 import elucent.eidolon.codex.CruciblePage.CrucibleStep;
@@ -13,13 +11,18 @@ import elucent.eidolon.codex.ListPage.ListEntry;
 import elucent.eidolon.codex.RitualPage.RitualIngredient;
 import elucent.eidolon.codex.SignIndexPage.SignEntry;
 import elucent.eidolon.ritual.RitualRegistry;
+import elucent.eidolon.spell.Sign;
 import elucent.eidolon.spell.Signs;
 import elucent.eidolon.util.ColorUtil;
 import net.minecraft.block.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.potion.Potions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CodexChapters {
     static List<Category> categories = new ArrayList<>();
@@ -379,11 +382,11 @@ public class CodexChapters {
             new TitlePage("eidolon.codex.page.basic_alchemy.1"),
             new CruciblePage(new ItemStack(Items.ROTTEN_FLESH),
                 new CrucibleStep(new ItemStack(Items.PORKCHOP), new ItemStack(Items.RED_MUSHROOM))),
-            new TitlePage("eidolon.codex.page.basic_alchemy.3"),
+            new TitlePage("eidolon.codex.page.basic_alchemy.2"),
             new CruciblePage(new ItemStack(Items.GUNPOWDER, 4),
                 new CrucibleStep(new ItemStack(Items.BONE_MEAL), new ItemStack(Registry.SULFUR.get())),
                 new CrucibleStep(1, new ItemStack(Items.CHARCOAL))),
-            new TitlePage("eidolon.codex.page.basic_alchemy.5"),
+            new TitlePage("eidolon.codex.page.basic_alchemy.3"),
             new CruciblePage(new ItemStack(Items.GOLDEN_APPLE),
                 new CrucibleStep(new ItemStack(Items.GOLD_INGOT, 2)),
                 new CrucibleStep(2, new ItemStack(Registry.ENCHANTED_ASH.get())),

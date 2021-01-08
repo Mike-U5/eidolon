@@ -3,10 +3,12 @@ package elucent.eidolon.block;
 import elucent.eidolon.Registry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.IWaterLoggable;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Direction;
@@ -15,7 +17,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
-public class PlinthBlockBase extends BlockBase {
+public class PlinthBlockBase extends BlockBase implements IWaterLoggable {
     public static final BooleanProperty TOP = BooleanProperty.create("top");
     public static final BooleanProperty BOTTOM = BooleanProperty.create("bottom");
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;

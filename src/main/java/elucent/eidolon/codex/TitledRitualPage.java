@@ -1,7 +1,6 @@
 package elucent.eidolon.codex;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-
 import elucent.eidolon.ritual.Ritual;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;

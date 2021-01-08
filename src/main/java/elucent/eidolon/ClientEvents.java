@@ -1,10 +1,6 @@
 package elucent.eidolon;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.mojang.blaze3d.systems.RenderSystem;
-
 import elucent.eidolon.util.RenderUtil;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -13,6 +9,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ClientEvents {
     @OnlyIn(Dist.CLIENT)

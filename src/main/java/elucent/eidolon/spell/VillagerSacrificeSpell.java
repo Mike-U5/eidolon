@@ -1,8 +1,5 @@
 package elucent.eidolon.spell;
 
-import java.util.Comparator;
-import java.util.List;
-
 import elucent.eidolon.Registry;
 import elucent.eidolon.block.HorizontalBlockBase;
 import elucent.eidolon.capability.ReputationProvider;
@@ -15,6 +12,7 @@ import elucent.eidolon.tile.GobletTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -23,6 +21,9 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.Comparator;
+import java.util.List;
 
 public class VillagerSacrificeSpell extends StaticSpell {
     Deity deity;

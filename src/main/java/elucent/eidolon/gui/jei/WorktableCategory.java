@@ -1,13 +1,12 @@
 package elucent.eidolon.gui.jei;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.mojang.blaze3d.matrix.MatrixStack;
-
 import elucent.eidolon.Eidolon;
 import elucent.eidolon.Registry;
 import elucent.eidolon.codex.CodexGui;
+import elucent.eidolon.recipe.CrucibleRecipe;
+import elucent.eidolon.recipe.WorktableRecipe;
+import elucent.eidolon.recipe.WorktableRegistry;
 import elucent.eidolon.util.StackUtil;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -20,6 +19,11 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 public class WorktableCategory implements IRecipeCategory<RecipeWrappers.Worktable> {
     static final ResourceLocation UID = new ResourceLocation(Eidolon.MODID, "worktable");
@@ -57,6 +61,8 @@ public class WorktableCategory implements IRecipeCategory<RecipeWrappers.Worktab
 
     @Override
     public void setIngredients(RecipeWrappers.Worktable wrapper, IIngredients ingredients) {
+        if (wrapper.page == null) wrapper.page = WorktableRegistry.getDefaultPage(wrapper.recipe);
+
         List<Ingredient> inputs = new ArrayList<>();
         for (Object o : wrapper.recipe.getCore()) inputs.add(StackUtil.ingredientFromObject(o));
         for (Object o : wrapper.recipe.getOuter()) inputs.add(StackUtil.ingredientFromObject(o));

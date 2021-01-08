@@ -1,10 +1,8 @@
 package elucent.eidolon.spell;
 
-import java.util.Comparator;
-import java.util.List;
-
 import elucent.eidolon.Registry;
 import elucent.eidolon.block.HorizontalBlockBase;
+import elucent.eidolon.capability.KnowledgeProvider;
 import elucent.eidolon.capability.ReputationProvider;
 import elucent.eidolon.deity.Deity;
 import elucent.eidolon.particle.Particles;
@@ -19,6 +17,9 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.Comparator;
+import java.util.List;
 
 public class PrayerSpell extends StaticSpell {
     Deity deity;

@@ -1,10 +1,10 @@
 package elucent.eidolon.spell;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import elucent.eidolon.Eidolon;
 import net.minecraft.util.ResourceLocation;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class AltarKeys {
     Set<ResourceLocation> keys = new HashSet<>();

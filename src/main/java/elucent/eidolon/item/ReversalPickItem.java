@@ -1,9 +1,10 @@
 package elucent.eidolon.item;
 
-import java.util.List;
-
+import com.google.common.eventbus.Subscribe;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.item.AxeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.PickaxeItem;
@@ -17,6 +18,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+
+import java.util.List;
 
 public class ReversalPickItem extends PickaxeItem {
     public ReversalPickItem(Properties builderIn) {

@@ -17,9 +17,9 @@ import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -31,7 +31,7 @@ public class WraithEntity extends MonsterEntity {
         super(type, worldIn);
         registerGoals();
     }
-
+    
     @Override
     public CreatureAttribute getCreatureAttribute() {
         return CreatureAttribute.UNDEAD;
@@ -44,20 +44,14 @@ public class WraithEntity extends MonsterEntity {
 
     @Override
     public boolean attackEntityAsMob(Entity target) {
-    	boolean flag = target.attackEntityFrom(DamageSource.MAGIC, 5F);
+    	if (target instanceof LivingEntity) {
+    		this.castSpell((LivingEntity)target);
+    		this.swing(Hand.MAIN_HAND, true);
+    		this.swing(Hand.OFF_HAND, true);
+    		return true;
+    	}
     	
-        if (flag && target instanceof LivingEntity) {
-        	final int chillTime = (int) (400 * EntityUtil.getWardingMod((LivingEntity)target));
-        	((LivingEntity)target).addPotionEffect(new EffectInstance(Registry.CHILLED_EFFECT.get(), chillTime));
-
-        	for (int i = 0; i < 50; ++i) {
-                world.addParticle(ParticleTypes.WITCH, this.getPosX() + rand.nextGaussian(), this.getBoundingBox().maxY + rand.nextGaussian() * (double)0.13F, this.getPosZ() + rand.nextGaussian(), 0.0D, 0.0D, 0.0D);
-            }
-        	
-        	world.playSound(null, this.getPosition(), Registry.WRAITH_SCREAM.get(), SoundCategory.HOSTILE, 1F, 1F);
-        }
-    	
-        return flag;
+    	return false;
     }
 
     protected void registerGoals() {
@@ -75,7 +69,7 @@ public class WraithEntity extends MonsterEntity {
     }
 
     protected void applyEntityAI() {
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.5D, false));
+        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, false));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
@@ -84,6 +78,25 @@ public class WraithEntity extends MonsterEntity {
     @Override
     public int getExperiencePoints(PlayerEntity player) {
         return 5;
+    }
+    
+    /**
+     * Creates a spell projectile that deals no real damage
+     * The damage comes from the regular attack
+     * @param target
+     */
+    public void castSpell(final LivingEntity target) {
+    	final Vector3d pos = target.getBoundingBox().getCenter();
+    	if (!world.isRemote) {
+            world.addEntity(new BonechillProjectileEntity(Registry.BONECHILL_PROJECTILE.get(), world).shoot(
+                pos.getX(), pos.getY() + 1D, pos.getZ(), 0, -1D, 0, this.getUniqueID()
+            ));
+            world.playSound(null, pos.getX(), pos.getY() + 1D, pos.getZ(), Registry.CAST_BONECHILL_EVENT.get(), SoundCategory.HOSTILE, 0.75f, 1.0f);
+            final int chillTicks = (int) (400 * EntityUtil.getCurseMod(target));
+            target.addPotionEffect(new EffectInstance(Registry.CHILLED_EFFECT.get(), chillTicks));
+            target.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this), 4F);
+        }
+    	this.swingArm(Hand.MAIN_HAND);
     }
 
     @Override

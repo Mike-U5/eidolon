@@ -4,7 +4,6 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-
 import elucent.eidolon.Registry;
 import elucent.eidolon.spell.Sign;
 import elucent.eidolon.spell.Signs;

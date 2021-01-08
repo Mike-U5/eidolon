@@ -1,36 +1,64 @@
 {
-  "cast_soulfire": {
-    "category": "neutral",
-    "subtitle": "eidolon.subtitle.cast_soulfire",
-    "sounds": [ "eidolon:cast_soulfire" ]
-  },
-  "cast_bonechill": {
-    "category": "neutral",
-    "subtitle": "eidolon.subtitle.cast_bonechill",
-    "sounds": [ "eidolon:cast_bonechill" ]
-  },
-  "splash_soulfire": {
-    "category": "neutral",
-    "subtitle": "eidolon.subtitle.splash_soulfire",
-    "sounds": [ "eidolon:splash_soulfire" ]
-  },
-  "splash_bonechill": {
-    "category": "neutral",
-    "subtitle": "eidolon.subtitle.splash_bonechill",
-    "sounds": [ "eidolon:splash_bonechill" ]
-  },
-  "select_sign": {
-    "category": "neutral",
-    "sounds": [ "eidolon:select_sign" ]
-  },
-  "chant_word": {
-    "category": "neutral",
-    "subtitle": "eidolon.subtitle.chant_word",
-    "sounds": [ "eidolon:chant_word" ]
-  },
-  "parousia": {
-    "category": "record",
-    "stream": true,
-    "sounds": [ "eidolon:parousia" ]
-  }
+	"cast_soulfire": {
+		"category": "neutral",
+		"subtitle": "eidolon.subtitle.cast_soulfire",
+		"sounds": ["eidolon:cast_soulfire"]
+	},
+	"cast_bonechill": {
+		"category": "neutral",
+		"subtitle": "eidolon.subtitle.cast_bonechill",
+		"sounds": ["eidolon:cast_bonechill"]
+	},
+	"splash_soulfire": {
+		"category": "neutral",
+		"subtitle": "eidolon.subtitle.splash_soulfire",
+		"sounds": ["eidolon:splash_soulfire"]
+	},
+	"splash_bonechill": {
+		"category": "neutral",
+		"subtitle": "eidolon.subtitle.splash_bonechill",
+		"sounds": ["eidolon:splash_bonechill"]
+	},
+	"select_sign": {
+		"category": "neutral",
+		"sounds": ["eidolon:select_sign"]
+	},
+	"chant_word": {
+		"category": "neutral",
+		"subtitle": "eidolon.subtitle.chant_word",
+		"sounds": ["eidolon:chant_word"]
+	},
+	"parousia": {
+		"category": "record",
+		"stream": true,
+		"sounds": ["eidolon:parousia"]
+	},
+	"brute_living": {
+		"stream": true,
+		"sounds": ["eidolon:swamp_hag_living_1", "eidolon:swamp_hag_living_2", "eidolon:swamp_hag_living_3", "eidolon:swamp_hag_living_4"]
+	},
+	"brute_hurt": {
+		"stream": true,
+		"sounds": ["eidolon:swamp_hag_hurt_1", "eidolon:swamp_hag_hurt_2", "eidolon:swamp_hag_hurt_3"]
+	},
+	"brute_death": {
+		"stream": true,
+		"sounds": ["eidolon:swamp_hag_death"]
+	},
+	"wraith_living": {
+		"stream": true,
+		"sounds": ["eidolon:ghost_idle_1", "eidolon:ghost_idle_2", "eidolon:ghost_idle_3"]
+	},
+	"wraith_hurt": {
+		"stream": true,
+		"sounds": ["eidolon:ghost_hurt_1", "eidolon:ghost_hurt_2"]
+	},
+	"wraith_death": {
+		"stream": true,
+		"sounds": ["eidolon:ghost_death"]
+	},
+	"wraith_scream": {
+		"stream": true,
+		"sounds": ["eidolon:ghost_jumpscare"]
+	}
 }

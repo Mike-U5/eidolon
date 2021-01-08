@@ -1,36 +1,36 @@
 package elucent.eidolon.ritual;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-
 import elucent.eidolon.Eidolon;
 import elucent.eidolon.Registry;
 import elucent.eidolon.codex.Page;
 import elucent.eidolon.codex.RitualPage;
+import elucent.eidolon.codex.WorktablePage;
 import elucent.eidolon.gui.jei.RecipeWrappers;
+import elucent.eidolon.recipe.WorktableRecipe;
 import elucent.eidolon.util.StackUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.potion.Potions;
 import net.minecraft.tags.ITag;
+import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.Tags;
+
+import java.util.*;
+import java.util.Map.Entry;
 
 public class RitualRegistry {
     static Map<ResourceLocation, Ritual> rituals = new HashMap<>();
@@ -75,8 +75,7 @@ public class RitualRegistry {
         return ritual;
     }
 
-    @OnlyIn(Dist.CLIENT)
-    static Page getDefaultPage(Ritual ritual, Object sacrifice) {
+    public static Page getDefaultPage(Ritual ritual, Object sacrifice) {
         List<RitualPage.RitualIngredient> inputs = new ArrayList<>();
         List<ItemStack> foci = new ArrayList<>();
         if (sacrifice instanceof MultiItemSacrifice) for (Object o : ((MultiItemSacrifice)sacrifice).items) {
@@ -105,7 +104,6 @@ public class RitualRegistry {
         return new RitualPage(ritual, center, inputs.toArray(new RitualPage.RitualIngredient[inputs.size()]));
     }
 
-    @OnlyIn(Dist.CLIENT)
     public static List<RecipeWrappers.RitualRecipe> getWrappedRecipes() {
         List<RecipeWrappers.RitualRecipe> wrappers = new ArrayList<>();
         for (Map.Entry<ResourceLocation, Ritual> entry : rituals.entrySet()) {
@@ -113,7 +111,7 @@ public class RitualRegistry {
             Page page = null; // linkedPages.getOrDefault(entry.getKey(), null);
             wrappers.add(new RecipeWrappers.RitualRecipe(
                 entry.getValue(),
-                page != null ? page : getDefaultPage(entry.getValue(), sacrifice),
+                page,
                 sacrifice
             ));
         }

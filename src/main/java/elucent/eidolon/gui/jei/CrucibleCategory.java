@@ -1,16 +1,11 @@
 package elucent.eidolon.gui.jei;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
 import com.mojang.blaze3d.matrix.MatrixStack;
-
 import elucent.eidolon.Eidolon;
 import elucent.eidolon.Registry;
 import elucent.eidolon.codex.CodexGui;
 import elucent.eidolon.recipe.CrucibleRecipe;
+import elucent.eidolon.recipe.CrucibleRegistry;
 import elucent.eidolon.util.StackUtil;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -23,6 +18,8 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
+
+import java.util.*;
 
 public class CrucibleCategory implements IRecipeCategory<RecipeWrappers.Crucible> {
     static final ResourceLocation UID = new ResourceLocation(Eidolon.MODID, "crucible");
@@ -85,6 +82,8 @@ public class CrucibleCategory implements IRecipeCategory<RecipeWrappers.Crucible
 
     @Override
     public void setIngredients(RecipeWrappers.Crucible wrapper, IIngredients ingredients) {
+        if (wrapper.page == null) wrapper.page = CrucibleRegistry.getDefaultPage(wrapper.recipe);
+
         List<List<ItemStack>> inputs = new ArrayList<>();
         for (CrucibleRecipe.Step step : wrapper.recipe.getSteps()) {
             List<StackIngredient> stepInputs = new ArrayList<>();

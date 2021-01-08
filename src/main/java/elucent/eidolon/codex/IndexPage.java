@@ -1,7 +1,6 @@
 package elucent.eidolon.codex;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-
 import elucent.eidolon.Eidolon;
 import elucent.eidolon.spell.KnowledgeUtil;
 import elucent.eidolon.spell.Sign;

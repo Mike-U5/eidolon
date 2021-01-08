@@ -1,22 +1,9 @@
 package elucent.eidolon;
 
-import elucent.eidolon.capability.IKnowledge;
-import elucent.eidolon.capability.IReputation;
-import elucent.eidolon.capability.KnowledgeImpl;
-import elucent.eidolon.capability.KnowledgeStorage;
-import elucent.eidolon.capability.ReputationImpl;
-import elucent.eidolon.capability.ReputationStorage;
+import com.google.common.collect.Lists;
+import elucent.eidolon.capability.*;
 import elucent.eidolon.codex.CodexChapters;
-import elucent.eidolon.entity.EmptyRenderer;
-import elucent.eidolon.entity.NecromancerEntity;
-import elucent.eidolon.entity.NecromancerModel;
-import elucent.eidolon.entity.NecromancerRenderer;
-import elucent.eidolon.entity.WraithEntity;
-import elucent.eidolon.entity.WraithModel;
-import elucent.eidolon.entity.WraithRenderer;
-import elucent.eidolon.entity.ZombieBruteEntity;
-import elucent.eidolon.entity.ZombieBruteModel;
-import elucent.eidolon.entity.ZombieBruteRenderer;
+import elucent.eidolon.entity.*;
 import elucent.eidolon.gui.SoulEnchanterScreen;
 import elucent.eidolon.gui.WoodenBrewingStandScreen;
 import elucent.eidolon.gui.WorktableScreen;
@@ -28,12 +15,11 @@ import elucent.eidolon.recipe.CrucibleRegistry;
 import elucent.eidolon.recipe.WorktableRegistry;
 import elucent.eidolon.ritual.RitualRegistry;
 import elucent.eidolon.spell.AltarEntries;
-import elucent.eidolon.tile.BrazierTileRenderer;
-import elucent.eidolon.tile.CrucibleTileRenderer;
-import elucent.eidolon.tile.GobletTileRenderer;
-import elucent.eidolon.tile.HandTileRenderer;
-import elucent.eidolon.tile.NecroticFocusTileRenderer;
-import elucent.eidolon.tile.SoulEnchanterTileRenderer;
+import elucent.eidolon.spell.AltarInfo;
+import elucent.eidolon.tile.*;
+import mezz.jei.api.JeiPlugin;
+import mezz.jei.runtime.JeiHelpers;
+import mezz.jei.startup.JeiStarter;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
@@ -42,13 +28,20 @@ import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.PotionUtils;
+import net.minecraft.potion.Potions;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -79,8 +72,10 @@ public class Eidolon {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::sendImc);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        
         FMLJavaModLoadingContext.get().getModEventBus().register(new Registry());
         Registry.init();
+        
         proxy.init();
         MinecraftForge.EVENT_BUS.register(new WorldGen());
         WorldGen.preInit();
@@ -151,8 +146,6 @@ public class Eidolon {
         InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.CHARM.getMessageBuilder().build());
         InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.RING.getMessageBuilder().size(2).build());
         InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.BELT.getMessageBuilder().build());
-        //InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.BODY.getMessageBuilder().build());
-        //InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.HEAD.getMessageBuilder().build());
         InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.NECKLACE.getMessageBuilder().build());
     }
 }

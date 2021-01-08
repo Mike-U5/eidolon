@@ -1,10 +1,8 @@
 package elucent.eidolon.particle;
 
-import org.lwjgl.opengl.GL11;
-
 import com.mojang.blaze3d.systems.RenderSystem;
-
 import elucent.eidolon.ClientEvents;
+import elucent.eidolon.Events;
 import elucent.eidolon.util.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.IParticleRenderType;
@@ -13,6 +11,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import org.lwjgl.opengl.GL11;
 
 public class GlowParticleRenderType implements IParticleRenderType {
     public static final GlowParticleRenderType INSTANCE = new GlowParticleRenderType();

@@ -47,6 +47,8 @@ public class BonechillWandItem extends WandItem {
                 stack.damageItem(1, entity, (player) -> {
                     player.sendBreakAnimation(hand);
                 });
+                
+                entity.getCooldownTracker().setCooldown(this, 10);
             }
             entity.swingArm(hand);
             return ActionResult.resultSuccess(stack);

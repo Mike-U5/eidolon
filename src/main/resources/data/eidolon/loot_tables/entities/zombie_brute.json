@@ -9,18 +9,11 @@
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": {
-                "min": 2.0,
-                "max": 2.0,
-                "type": "minecraft:uniform"
-              }
+              "count": {"min": 2.0, "max": 2.0, "type": "minecraft:uniform"}
             },
             {
               "function": "minecraft:looting_enchant",
-              "count": {
-                "min": 1.0,
-                "max": 1.0
-              }
+              "count": {"min": 1.0, "max": 1.0}
             }
           ],
           "name": "minecraft:rotten_flesh"
@@ -35,16 +28,6 @@
       "conditions": [
         {"condition": "minecraft:killed_by_player"},
         {"condition": "minecraft:random_chance_with_looting", "chance": 0.1, "looting_multiplier": 0.05}
-      ]
-    },
-	{
-      "rolls": 1,
-      "entries": [
-        {"type": "minecraft:item", "name": "eidolon:lead_ingot"}
-      ],
-      "conditions": [
-        {"condition": "minecraft:killed_by_player"},
-        {"condition": "minecraft:random_chance_with_looting", "chance": 0.025, "looting_multiplier": 0.01}
       ]
     }
   ]

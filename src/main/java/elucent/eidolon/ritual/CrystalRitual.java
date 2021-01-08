@@ -23,12 +23,16 @@ public class CrystalRitual extends Ritual {
 
     @Override
     public RitualResult start(World world, BlockPos pos) {
-        List<LivingEntity> entities = world.getEntitiesWithinAABB(LivingEntity.class, getSearchBounds(pos), (e) -> e.isEntityUndead());
+        final List<LivingEntity> entities = world.getEntitiesWithinAABB(LivingEntity.class, getSearchBounds(pos), (e) -> e.isEntityUndead());
         for (LivingEntity e : entities) {
+        	if (e.getHealth() > 50F || !e.isNonBoss()) {
+        		continue;
+        	}
+        	
             e.attackEntityFrom(Registry.RITUAL_DAMAGE, e.getMaxHealth() * 1000);
             if (!world.isRemote) {
                 Networking.sendToTracking(world, e.getPosition(), new CrystallizeEffectPacket(e.getPosition()));
-                world.addEntity(new ItemEntity(world, e.getPosX(), e.getPosY(), e.getPosZ(), new ItemStack(Registry.SOUL_SHARD.get(), 1 + world.rand.nextInt(3))));
+                world.addEntity(new ItemEntity(world, e.getPosX(), e.getPosY(), e.getPosZ(), new ItemStack(Registry.SOUL_SHARD.get(), 2)));
             }
         }
         return RitualResult.TERMINATE;

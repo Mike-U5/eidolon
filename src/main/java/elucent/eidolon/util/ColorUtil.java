@@ -1,5 +1,8 @@
 package elucent.eidolon.util;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
 public class ColorUtil {
     public static int getAlpha(int packedColor) {
         return packedColor >>> 24;

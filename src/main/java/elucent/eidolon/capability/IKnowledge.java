@@ -1,9 +1,12 @@
 package elucent.eidolon.capability;
 
-import java.util.Set;
-
 import elucent.eidolon.spell.Sign;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
+
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 public interface IKnowledge {
     boolean knowsSign(Sign sign);

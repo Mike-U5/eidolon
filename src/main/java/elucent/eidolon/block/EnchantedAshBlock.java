@@ -1,19 +1,16 @@
 package elucent.eidolon.block;
 
-import java.util.Map;
-import java.util.Random;
-
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-
+import com.google.common.collect.Sets;
 import elucent.eidolon.Registry;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.RedstoneWireBlock;
+import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
@@ -33,6 +30,11 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import javax.annotation.Nullable;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 
 public class EnchantedAshBlock extends BlockBase {
     public static final EnumProperty<RedstoneSide> NORTH = BlockStateProperties.REDSTONE_NORTH;
@@ -216,10 +218,21 @@ public class EnchantedAshBlock extends BlockBase {
         return entity instanceof LivingEntity && ((LivingEntity)entity).isEntityUndead();
     }
 
+    boolean isBlocked(Entity entity) {
+        if (entity == null) return false;
+        if (entity instanceof LivingEntity) {
+            LivingEntity living = (LivingEntity)entity;
+            if (living.isEntityUndead()) return true;
+        }
+        if (entity.getPassengers().stream().anyMatch((e) -> e instanceof LivingEntity && ((LivingEntity)e).isEntityUndead()))
+            return true;
+
+        return false;
+    }
+
     @Override
     public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
-        return ctx.getEntity() != null && ctx.getEntity() instanceof LivingEntity && ((LivingEntity)ctx.getEntity()).isEntityUndead()
-            ? BARRIER_SHAPE : super.getCollisionShape(state, world, pos, ctx);
+        return isBlocked(ctx.getEntity()) ? BARRIER_SHAPE : super.getCollisionShape(state, world, pos, ctx);
     }
 
     @Override

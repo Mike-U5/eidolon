@@ -1,7 +1,5 @@
 package elucent.eidolon.item;
 
-import java.util.List;
-
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.AxeItem;
@@ -13,6 +11,8 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.List;
 
 public class CleavingAxeItem extends AxeItem {
     public CleavingAxeItem(Properties builderIn) {

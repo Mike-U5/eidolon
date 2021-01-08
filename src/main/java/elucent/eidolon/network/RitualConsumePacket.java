@@ -1,7 +1,5 @@
 package elucent.eidolon.network;
 
-import java.util.function.Supplier;
-
 import elucent.eidolon.Eidolon;
 import elucent.eidolon.Registry;
 import elucent.eidolon.particle.Particles;
@@ -12,6 +10,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkEvent;
+
+import java.util.function.Supplier;
 
 public class RitualConsumePacket {
     BlockPos src, dst;
