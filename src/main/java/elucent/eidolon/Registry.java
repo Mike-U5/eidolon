@@ -57,6 +57,7 @@ import elucent.eidolon.particle.SteamParticleType;
 import elucent.eidolon.particle.WispParticleType;
 import elucent.eidolon.potion.AnchoredEffect;
 import elucent.eidolon.potion.ChilledEffect;
+import elucent.eidolon.potion.WarpedEffect;
 import elucent.eidolon.ritual.AllureRitual;
 import elucent.eidolon.ritual.CrystalRitual;
 import elucent.eidolon.ritual.DaylightRitual;
@@ -266,6 +267,7 @@ public class Registry {
 	    PAROUSIA = addSound("parousia");
 
     public static RegistryObject<Effect>
+    	WARPED_EFFECT = POTIONS.register("warped", () -> new WarpedEffect()),
         CHILLED_EFFECT = POTIONS.register("chilled", () -> new ChilledEffect()),
         ANCHORED_EFFECT = POTIONS.register("anchored", () -> new AnchoredEffect());
 
@@ -325,10 +327,10 @@ public class Registry {
         SANGUINE_AMULET = addItem("sanguine_amulet", new SanguineAmuletItem(itemProps()
             .rarity(Rarity.UNCOMMON).maxStackSize(1)).setLore("lore.eidolon.sanguine_amulet")),
         SOULFIRE_WAND = addItem("soulfire_wand", new SoulfireWandItem(itemProps()
-            .rarity(Rarity.UNCOMMON).maxStackSize(1).maxDamage(253).setNoRepair())
+            .rarity(Rarity.UNCOMMON).maxStackSize(1).maxDamage(7000).setNoRepair())
             .setLore("lore.eidolon.soulfire_wand")),
         BONECHILL_WAND = addItem("bonechill_wand", new BonechillWandItem(itemProps()
-            .rarity(Rarity.UNCOMMON).maxStackSize(1).maxDamage(253).setNoRepair())
+            .rarity(Rarity.UNCOMMON).maxStackSize(1).maxDamage(7000).setNoRepair())
             .setLore("lore.eidolon.bonechill_wand")),
         GRAVITY_BELT = addItem("gravity_belt", new GravityBeltItem(itemProps()
             .rarity(Rarity.UNCOMMON).maxStackSize(1)).setLore("lore.eidolon.gravity_belt")),

@@ -23,7 +23,11 @@ public class SoulfireWandItem extends WandItem {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand) {
-        ItemStack stack = entity.getHeldItem(hand);
+    	final ItemStack stack = entity.getHeldItem(hand);
+        if (stack.getMaxDamage() == stack.getDamage()) {
+        	return ActionResult.resultFail(stack);
+        }
+        
         if (!entity.isSwingInProgress) {
             if (!world.isRemote) {
                 Vector3d pos = entity.getPositionVec().add(entity.getLookVec().scale(0.5)).add(0.5 * Math.sin(Math.toRadians(225 - entity.rotationYawHead)), entity.getHeight() * 2 / 3, 0.5 * Math.cos(Math.toRadians(225 - entity.rotationYawHead)));
@@ -32,9 +36,11 @@ public class SoulfireWandItem extends WandItem {
                     pos.x, pos.y, pos.z, vel.x, vel.y, vel.z, entity.getUniqueID()
                 ));
                 world.playSound(null, pos.x, pos.y, pos.z, Registry.CAST_SOULFIRE_EVENT.get(), SoundCategory.NEUTRAL, 0.75f, random.nextFloat() * 0.2f + 0.9f);
-                stack.damageItem(1, entity, (player) -> {
-                    player.sendBreakAnimation(hand);
-                });
+                //stack.damageItem(1, entity, (player) -> {
+                //    player.sendBreakAnimation(hand);
+                //});
+                stack.setDamage(this.getDamage(stack) + this.visPerCast());
+                this.putWandsOnCooldown(entity);
 
                 try {
                     Template t = ((ServerWorld)world).getStructureTemplateManager().getTemplate(new ResourceLocation("eidolon", "corridor"));
@@ -47,7 +53,7 @@ public class SoulfireWandItem extends WandItem {
                     //
                 }
                 
-                entity.getCooldownTracker().setCooldown(this, 10);
+                entity.getCooldownTracker().setCooldown(this, this.getCooldown(entity));
             }
             entity.swingArm(hand);
             return ActionResult.resultSuccess(stack);

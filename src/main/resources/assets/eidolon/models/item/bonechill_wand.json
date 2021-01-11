@@ -1,6 +1,7 @@
 {
   "parent": "minecraft:item/handheld",
-  "textures": {
-    "layer0": "eidolon:item/bonechill_wand"
-  }
+  "textures": {"layer0": "eidolon:item/bonechill_wand"},
+  "overrides": [
+    { "predicate": { "damaged": 1, "damage": 1.0 }, "model": "eidolon:item/bonechill_wand_inert" }
+  ]
 }

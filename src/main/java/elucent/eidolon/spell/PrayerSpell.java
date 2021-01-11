@@ -1,8 +1,10 @@
 package elucent.eidolon.spell;
 
+import java.util.Comparator;
+import java.util.List;
+
 import elucent.eidolon.Registry;
 import elucent.eidolon.block.HorizontalBlockBase;
-import elucent.eidolon.capability.KnowledgeProvider;
 import elucent.eidolon.capability.ReputationProvider;
 import elucent.eidolon.deity.Deity;
 import elucent.eidolon.particle.Particles;
@@ -16,10 +18,8 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-
-import java.util.Comparator;
-import java.util.List;
 
 public class PrayerSpell extends StaticSpell {
     Deity deity;
@@ -46,15 +46,17 @@ public class PrayerSpell extends StaticSpell {
         EffigyTileEntity effigy = effigies.stream().min(Comparator.comparingDouble((e) -> e.getPos().distanceSq(pos))).get();
         if (!world.isRemote) {
             effigy.pray();
-            AltarInfo info = AltarInfo.getAltarInfo(world, effigy.getPos());
+            final AltarInfo info = AltarInfo.getAltarInfo(world, effigy.getPos());
             world.getCapability(ReputationProvider.CAPABILITY, null).ifPresent((rep) -> {
                 rep.pray(player, world.getGameTime());
                 double prev = rep.getReputation(player, deity.getId());
-                rep.addReputation(player, deity.getId(), 1.0 + 0.25 * info.getPower());
+                final double increase = 1.0 + 0.25 * info.getPower();
+                rep.addReputation(player, deity.getId(), increase);
                 deity.onReputationChange(player, rep, prev, rep.getReputation(player, deity.getId()));
+                
+                player.sendStatusMessage(new TranslationTextComponent("Your dark favor has increased by "+increase+". It is now " + rep.getReputation(player, deity.getId())), true);
             });
-        }
-        else {
+        } else {
             world.playSound(player, effigy.getPos(), SoundEvents.ENTITY_LIGHTNING_BOLT_THUNDER, SoundCategory.NEUTRAL, 10000.0F, 0.6F + world.rand.nextFloat() * 0.2F);
             world.playSound(player, effigy.getPos(), SoundEvents.ENTITY_LIGHTNING_BOLT_IMPACT, SoundCategory.NEUTRAL, 2.0F, 0.5F + world.rand.nextFloat() * 0.2F);
             BlockState state = world.getBlockState(effigy.getPos());

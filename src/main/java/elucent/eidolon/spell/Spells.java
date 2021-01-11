@@ -33,6 +33,10 @@ public class Spells {
     }
 
     public static Spell
+    	WAND_RECHARGE = register(new WandRechargeSpell(
+            new ResourceLocation(Eidolon.MODID, "magic_touch"),
+            Signs.SACRED_SIGN, Signs.SACRED_SIGN, Signs.SACRED_SIGN
+        )),
         DARK_PRAYER = register(new PrayerSpell(
             new ResourceLocation(Eidolon.MODID, "dark_prayer"),
             Deities.DARK_DEITY,

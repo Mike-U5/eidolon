@@ -24,7 +24,7 @@ public class EntityUtil {
     
     public static float getItemWarding(Item item) {
     	// WARLOCK
-    	if (item == Registry.WARLOCK_HAT.get()) {
+    	if (item == Registry.WARLOCK_HAT.get() || item == Registry.TOP_HAT.get()) {
     		return 0.12F;
     	}
     	

@@ -20,6 +20,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 import java.util.Comparator;
@@ -66,11 +67,13 @@ public class VillagerSacrificeSpell extends StaticSpell {
                 double prev = rep.getReputation(player, deity.getId());
                 if (rep.unlock(player, deity.getId(), DeityLocks.SACRIFICE_VILLAGER))
                     deity.onReputationUnlock(player, rep, DeityLocks.SACRIFICE_VILLAGER);
-                rep.addReputation(player, deity.getId(), 6.0 + 1.0 * info.getPower());
+                final double increase = 6.0 + 1.0 * info.getPower();
+                rep.addReputation(player, deity.getId(), increase);
                 deity.onReputationChange(player, rep, prev, rep.getReputation(player, deity.getId()));
+                
+                player.sendStatusMessage(new TranslationTextComponent("Your dark favor has increased by "+increase+". It is now " + rep.getReputation(player, deity.getId())), true);
             });
-        }
-        else {
+        } else {
             world.playSound(player, effigy.getPos(), SoundEvents.ENTITY_LIGHTNING_BOLT_THUNDER, SoundCategory.NEUTRAL, 10000.0F, 0.6F + world.rand.nextFloat() * 0.2F);
             world.playSound(player, effigy.getPos(), SoundEvents.ENTITY_LIGHTNING_BOLT_IMPACT, SoundCategory.NEUTRAL, 2.0F, 0.5F + world.rand.nextFloat() * 0.2F);
             BlockState state = world.getBlockState(effigy.getPos());

@@ -55,13 +55,13 @@ import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -70,6 +70,7 @@ import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -280,8 +281,8 @@ public class Events {
 		if (event.getSource().getTrueSource() instanceof LivingEntity && this.isMagical(event.getSource())) {
 			final LivingEntity attacker = (LivingEntity) event.getSource().getTrueSource();
 
-			// Warlock Hat Damage Boost
-			if (attacker.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() instanceof WarlockRobesItem) {
+			// Warlock Hat Damage boosts the power of wither
+			if (attacker.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() instanceof WarlockRobesItem && event.getSource() == DamageSource.WITHER) {
 				event.setAmount(event.getAmount() * 1.5F);
 			}
 
@@ -289,7 +290,6 @@ public class Events {
 			final float oldDmg = event.getAmount();
 			final float mod = EntityUtil.getWardingMod(event.getEntityLiving());
 			final float newDmg = oldDmg * mod;
-			///Minecraft.getInstance().player.sendChatMessage("OG: " + oldDmg + " || MOD: " + mod + " || NEW: " + newDmg);
 			event.setAmount(newDmg);
 
 			// Warlock Body Sapping Boost

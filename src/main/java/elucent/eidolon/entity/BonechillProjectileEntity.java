@@ -8,9 +8,8 @@ import elucent.eidolon.util.ColorUtil;
 import elucent.eidolon.util.EntityUtil;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
-import net.minecraft.util.IndirectEntityDamageSource;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -47,16 +46,17 @@ public class BonechillProjectileEntity extends SpellProjectileEntity {
                 .spawn(world, lerpX, lerpY, lerpZ);
         }
     }
-
+    
+    protected float getDamage() {
+    	return (this.wraithSpell) ? 4f : 6f;
+    }
+    
     @Override
     protected void onImpact(RayTraceResult ray, LivingEntity target) {
-    	final PlayerEntity caster = world.getPlayerByUuid(casterId);
-    	if (caster != null) {
-            final int chillTicks = (int) (300 * EntityUtil.getCurseMod(target));
-            target.attackEntityFrom(new IndirectEntityDamageSource(Registry.FROST_DAMAGE.getDamageType(), this, world.getPlayerByUuid(casterId)), 4F);
-            target.addPotionEffect(new EffectInstance(Registry.CHILLED_EFFECT.get(), chillTicks));
-            onImpact(ray);
-    	}
+    	final int chillTicks = (int) (300 * EntityUtil.getCurseMod(target));
+        target.addPotionEffect(new EffectInstance(Registry.CHILLED_EFFECT.get(), chillTicks));
+        target.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, world.getPlayerByUuid(casterId)), this.getDamage());
+        onImpact(ray);
     }
 
     @Override

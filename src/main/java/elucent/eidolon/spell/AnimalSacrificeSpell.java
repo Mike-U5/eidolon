@@ -19,6 +19,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 import java.util.Comparator;
@@ -63,8 +64,11 @@ public class AnimalSacrificeSpell extends StaticSpell {
                 double prev = rep.getReputation(player, deity.getId());
                 if (rep.unlock(player, deity.getId(), DeityLocks.SACRIFICE_MOB))
                     deity.onReputationUnlock(player, rep, DeityLocks.SACRIFICE_MOB);
-                rep.addReputation(player, deity.getId(), 3.0 + 0.5 * info.getPower());
+                final double increase = 3.0 + 0.5 * info.getPower();
+                rep.addReputation(player, deity.getId(), increase);
                 deity.onReputationChange(player, rep, prev, rep.getReputation(player, deity.getId()));
+                
+                player.sendStatusMessage(new TranslationTextComponent("Your dark favor has increased by "+increase+". It is now " + rep.getReputation(player, deity.getId())), true);
             });
         }
         else {

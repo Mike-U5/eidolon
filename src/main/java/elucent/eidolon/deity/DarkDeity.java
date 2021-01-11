@@ -16,8 +16,7 @@ public class DarkDeity extends Deity {
     public void onReputationUnlock(PlayerEntity player, IReputation rep, ResourceLocation lock) {
         if (lock.equals(DeityLocks.SACRIFICE_MOB)) {
             KnowledgeUtil.grantSign(player, Signs.SOUL_SIGN);
-        }
-        else if (lock.equals(DeityLocks.SACRIFICE_VILLAGER)) {
+        } else if (lock.equals(DeityLocks.SACRIFICE_VILLAGER)) {
             KnowledgeUtil.grantSign(player, Signs.MIND_SIGN);
         }
     }
@@ -28,8 +27,7 @@ public class DarkDeity extends Deity {
             rep.setReputation(player, id, 3);
             rep.lock(player, id, DeityLocks.SACRIFICE_MOB);
             KnowledgeUtil.grantSign(player, Signs.BLOOD_SIGN);
-        }
-        else if (prev < 15 && current >= 15) {
+        } else if (prev < 15 && current >= 15) {
             rep.setReputation(player, id, 15);
             rep.lock(player, id, DeityLocks.SACRIFICE_VILLAGER);
             KnowledgeUtil.grantFact(player, Facts.VILLAGER_SACRIFICE);

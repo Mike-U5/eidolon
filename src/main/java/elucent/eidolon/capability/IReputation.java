@@ -1,9 +1,13 @@
 package elucent.eidolon.capability;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Resource;
+
+import elucent.eidolon.Registry;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -45,10 +49,13 @@ public interface IReputation {
 
     default void pray(PlayerEntity player, long time) {
         pray(player.getUniqueID(), time);
+        player.addPotionEffect(new EffectInstance(Registry.WARPED_EFFECT.get(), 24000));
     }
 
     default boolean canPray(PlayerEntity player, long time) {
-        return player.isCreative() || canPray(player.getUniqueID(), time);
+    	return !player.isPotionActive(Registry.WARPED_EFFECT.get());
+    	//return true;
+        //return player.isCreative() || canPray(player.getUniqueID(), time);
     }
 
     Map<UUID, Long> getPrayerTimes();

@@ -30,17 +30,17 @@ public class TopHatItem extends ArmorItem {
     public static class Material implements IArmorMaterial {
         @Override
         public int getDurability(EquipmentSlotType slot) {
-            return MAX_DAMAGE_ARRAY[slot.getIndex()] * 7;
+            return MAX_DAMAGE_ARRAY[slot.getIndex()] * 21;
         }
 
         @Override
         public int getDamageReductionAmount(EquipmentSlotType slot) {
-            return 1;
+            return 2;
         }
 
         @Override
         public int getEnchantability() {
-            return 12;
+            return 25;
         }
 
         @Override

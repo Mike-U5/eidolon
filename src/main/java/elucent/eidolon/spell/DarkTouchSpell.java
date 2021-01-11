@@ -93,7 +93,7 @@ public class DarkTouchSpell extends StaticSpell {
 
     boolean canTouch(ItemStack stack) {
         return stack.getItem() == Registry.PEWTER_INLAY.get()             // is pewter
-               || stack.getItem() == Items.BLACK_WOOL
+               || stack.getItem() == Registry.WARLOCK_HAT.get()
                || (stack.getItem() instanceof MusicDiscItem && stack.getItem() != Registry.PAROUSIA_DISC.get());
             // || (stack.isDamageable() && stack.getMaxStackSize() == 1); // is tool
     }
@@ -101,7 +101,7 @@ public class DarkTouchSpell extends StaticSpell {
     ItemStack touchResult(ItemStack stack) { // assumes canTouch is true
         if (stack.getItem() == Registry.PEWTER_INLAY.get())
             return new ItemStack(Registry.UNHOLY_SYMBOL.get());
-        else if (stack.getItem() == Items.BLACK_WOOL)
+        else if (stack.getItem() == Registry.WARLOCK_HAT.get())
             return new ItemStack(Registry.TOP_HAT.get());
         else if (stack.getItem() instanceof MusicDiscItem && stack.getItem() != Registry.PAROUSIA_DISC.get())
             return new ItemStack(Registry.PAROUSIA_DISC.get());

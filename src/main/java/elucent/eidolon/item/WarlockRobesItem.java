@@ -42,7 +42,7 @@ public class WarlockRobesItem extends ArmorItem {
                 case CHEST:
                     return 7;
                 case HEAD:
-                    return 3;
+                    return 2;
                 case FEET:
                     return 2;
                 default:
