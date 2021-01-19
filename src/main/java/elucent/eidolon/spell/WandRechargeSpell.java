@@ -9,6 +9,7 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -68,9 +69,7 @@ public class WandRechargeSpell extends TransmuteSpell {
     			final ItemStack stack = items.get(0).getItem();
         		final Item repairItem = getRepairItem(stack.getItem());
                 if (repairItem != null && consumeHeldItem(player, repairItem)) {
-                	final int newDamage = stack.getDamage() - (6000);
-                	
-                	stack.setDamage(Math.max(newDamage, 0));
+                	stack.setDamage(0);
                     items.get(0).setItem(stack);
                     final Vector3d p = items.get(0).getPositionVec();
                     items.get(0).setDefaultPickupDelay();
@@ -89,6 +88,9 @@ public class WandRechargeSpell extends TransmuteSpell {
     	}
     	if (wand == Registry.SOULFIRE_WAND.get()) {
     		return Registry.SHADOW_GEM.get();
+    	}
+    	if (wand == Registry.HEALING_WAND.get()) {
+    		return Items.GOLDEN_APPLE;
     	}
     	return null;
     }

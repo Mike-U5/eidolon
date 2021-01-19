@@ -2,7 +2,6 @@ package elucent.eidolon;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.UUID;
 
 import com.mojang.authlib.GameProfile;
 
@@ -22,14 +21,10 @@ import elucent.eidolon.ritual.Ritual;
 import elucent.eidolon.spell.Signs;
 import elucent.eidolon.tile.GobletTileEntity;
 import elucent.eidolon.util.EntityUtil;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
@@ -45,7 +40,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
-import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -55,7 +49,6 @@ import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MobSpawnInfo;
@@ -64,21 +57,14 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
-import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
-import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class Events {
-	private static final UUID WARLOCK_SPEED_BOOST_ID = UUID.fromString("c1f96acc-e117-4dc1-a351-e196a4de6071");
-	private static final AttributeModifier WARLOCK_SPEED_BOOST = new AttributeModifier(WARLOCK_SPEED_BOOST_ID, Eidolon.MODID + "Warlock Boots Speed Boost", (double)1.5F, AttributeModifier.Operation.ADDITION);
-    
 	@SubscribeEvent
 	public void attachWorldCaps(AttachCapabilitiesEvent<World> event) {
 		if (event.getObject() instanceof World)
@@ -152,13 +138,13 @@ public class Events {
 					rate += 3;
 				}
 
-				final int dropCount = (rate > source.world.rand.nextInt(6)) ? 2 : 1;
-				ItemEntity drop = new ItemEntity(source.world, entity.getPosX(), entity.getPosY(), entity.getPosZ(),
-						new ItemStack(Registry.SOUL_SHARD.get(), dropCount));
-				drop.setDefaultPickupDelay();
-				event.getDrops().add(drop);
-				Networking.sendToTracking(entity.world, entity.getPosition(),
-						new CrystallizeEffectPacket(entity.getPosition()));
+				if (rate > source.world.rand.nextInt(6)) {
+					final ItemEntity drop = new ItemEntity(source.world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), new ItemStack(Registry.SOUL_SHARD.get(), 1));
+					drop.setDefaultPickupDelay();
+					event.getDrops().add(drop);
+				}
+				
+				Networking.sendToTracking(entity.world, entity.getPosition(), new CrystallizeEffectPacket(entity.getPosition()));
 			}
 
 			// Cleaving Axe Event
@@ -243,14 +229,6 @@ public class Events {
 	}
 
 	@SubscribeEvent
-	public void onApplyPotion(PotionEvent.PotionApplicableEvent event) {
-		if (event.getPotionEffect().getPotion() == Effects.SLOWNESS && event.getEntityLiving()
-				.getItemStackFromSlot(EquipmentSlotType.FEET).getItem() instanceof WarlockRobesItem) {
-			event.setResult(Event.Result.DENY);
-		}
-	}
-
-	@SubscribeEvent
 	public void addTooltips(ItemTooltipEvent event) {
 		final int val = (int) (EntityUtil.getItemWarding(event.getItemStack().getItem()) / 0.04F);
 		if (val > 0) {
@@ -262,6 +240,14 @@ public class Events {
 
 	private boolean isMagical(DamageSource src) {
 		if (src.isMagicDamage()) {
+			return true;
+		}
+		
+		if (src.getDamageType() == DamageSource.MAGIC.getDamageType()) {
+			return true;
+		}
+		
+		if (src.getDamageType() == "indirectMagic") {
 			return true;
 		}
 
@@ -296,26 +282,6 @@ public class Events {
 			if (attacker.getItemStackFromSlot(EquipmentSlotType.CHEST).getItem() instanceof WarlockRobesItem && event.getSource().getDamageType() == DamageSource.WITHER.getDamageType()) {
 				attacker.heal(event.getAmount() / 2);
 			}
-		}
-	}
-
-	/** Speed Bonus from Wizard Boots */
-	@SubscribeEvent
-	public static void update(LivingEvent.LivingUpdateEvent event) {
-		if (!(event.getEntityLiving() instanceof PlayerEntity)) {
-			return;
-		}
-		
-		final PlayerEntity player = (PlayerEntity)event.getEntityLiving();
-		final ModifiableAttributeInstance speed = player.getAttribute(Attributes.MOVEMENT_SPEED);
-		final boolean equipped = (player.getItemStackFromSlot(EquipmentSlotType.FEET).getItem() instanceof WarlockRobesItem);
-		Minecraft.getInstance().player.sendChatMessage(player.getItemStackFromSlot(EquipmentSlotType.FEET).getItem().getTranslationKey());
-		
-		if (equipped && !speed.hasModifier(WARLOCK_SPEED_BOOST)) {
-			Minecraft.getInstance().player.sendChatMessage("WARLOCKKU SPEEDO BOOSTU");
-			player.getAttribute(Attributes.MOVEMENT_SPEED).applyNonPersistentModifier(WARLOCK_SPEED_BOOST);
-		} else if (!equipped && speed.hasModifier(WARLOCK_SPEED_BOOST)) {
-			player.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(WARLOCK_SPEED_BOOST);
 		}
 	}
 

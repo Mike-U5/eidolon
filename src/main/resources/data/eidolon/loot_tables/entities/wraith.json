@@ -1,49 +1,57 @@
 {
-	"pools": [{
-			"rolls": 1,
-			"entries": [{
-				"type": "minecraft:item",
-				"name": "minecraft:bone"
-			}]
-		},
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 1.0
+            },
+            {
+              "function": "minecraft:looting_enchant",
+              "count": 1.0
+            }
+          ],
+          "name": "eidolon:tattered_cloth"
+        },
 		{
-			"rolls": 1,
-			"entries": [{
-					"type": "minecraft:item",
-					"weight": 7,
-					"name": "eidolon:tattered_cloth"
-				},
-				{
-					"type": "minecraft:item",
-					"weight": 1,
-					"name": "eidolon:wraith_heart"
-				},
-				{
-					"type": "minecraft:item",
-					"weight": 1,
-					"name": "minecraft:experience_bottle"
-				},
-				{
-					"type": "minecraft:item",
-					"weight": 1,
-					"name": "eidolon:lead_ingot"
-				},
-				{
-					"type": "minecraft:item",
-					"weight": 1,
-					"name": "minecraft:phantom_membrane"
-				}
-			],
-			"conditions": [{
-					"condition": "minecraft:random_chance_with_looting",
-					"chance": 0.55,
-					"looting_multiplier": 0.15
-				},
-				{
-					"condition": "minecraft:killed_by_player",
-					"inverse": true
-				}
-			]
-		}
-	]
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 1.0
+            },
+            {
+              "function": "minecraft:looting_enchant",
+              "count": 1.0
+            }
+          ],
+          "name": "minecraft:bone"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "eidolon:wraith_heart"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:killed_by_player"
+        },
+        {
+          "condition": "minecraft:random_chance_with_looting",
+          "chance": 0.05,
+          "looting_multiplier": 0.025
+        }
+      ]
+    }
+  ]
 }

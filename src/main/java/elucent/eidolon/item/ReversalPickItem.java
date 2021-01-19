@@ -1,10 +1,9 @@
 package elucent.eidolon.item;
 
-import com.google.common.eventbus.Subscribe;
-import net.minecraft.block.Blocks;
+import java.util.List;
+
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.AxeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.PickaxeItem;
@@ -18,8 +17,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-
-import java.util.List;
 
 public class ReversalPickItem extends PickaxeItem {
     public ReversalPickItem(Properties builderIn) {
@@ -46,10 +43,11 @@ public class ReversalPickItem extends PickaxeItem {
     @SubscribeEvent
     public static void onStartBreak(PlayerEvent.BreakSpeed event) {
         if (event.getPlayer().getHeldItemMainhand().getItem() instanceof ReversalPickItem) {
-            float hardness = event.getState().getBlockHardness(event.getEntity().world, event.getPos());
-            float adjHardness = 1 / (hardness / 1.5f + event.getState().getHarvestLevel());
+            final float hardness = event.getState().getBlockHardness(event.getEntity().world, event.getPos());
+            final float adjHardness = 1 / (hardness / 1.5f + event.getState().getHarvestLevel());
             float newSpeed = MathHelper.sqrt(event.getOriginalSpeed() * 0.25f) * MathHelper.sqrt(hardness / adjHardness);
-            event.setNewSpeed(newSpeed * newSpeed);
+            newSpeed = newSpeed * newSpeed;
+            event.setNewSpeed(newSpeed);
         }
     }
 }

@@ -25,10 +25,10 @@ public class WraithEntity extends SkeletonEntity {
     @Override
     public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
     	final Vector3d pos = this.getPositionVec().add(this.getLookVec().scale(0.5)).add(0.5 * Math.sin(Math.toRadians(225 - this.rotationYawHead)), this.getHeight() * 2 / 3, 0.5 * Math.cos(Math.toRadians(225 - this.rotationYawHead)));
-    	final Vector3d vel = this.getEyePosition(0).add(this.getLookVec().scale(40)).subtract(pos).scale(0.02D);
+    	final Vector3d vel = this.getEyePosition(0).add(this.getLookVec().scale(5)).subtract(pos).scale(0.05D);
     	
     	final BonechillProjectileEntity spell = new BonechillProjectileEntity(Registry.BONECHILL_PROJECTILE.get(), world);
-    	spell.setWraithSpell();
+    	spell.setNoGravity();
         world.addEntity(spell.shoot(pos.x, pos.y, pos.z, vel.x, vel.y, vel.z, this.getUniqueID()));
         
         this.swingArm(Hand.MAIN_HAND);

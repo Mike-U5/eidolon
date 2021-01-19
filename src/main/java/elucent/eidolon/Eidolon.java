@@ -115,6 +115,7 @@ public class Eidolon {
         RenderingRegistry.registerEntityRenderingHandler(Registry.NECROMANCER.get(), (erm) -> new NecromancerRenderer(erm, new NecromancerModel(0), 0.6f));
         RenderingRegistry.registerEntityRenderingHandler(Registry.SOULFIRE_PROJECTILE.get(), (erm) -> new EmptyRenderer(erm));
         RenderingRegistry.registerEntityRenderingHandler(Registry.BONECHILL_PROJECTILE.get(), (erm) -> new EmptyRenderer(erm));
+        RenderingRegistry.registerEntityRenderingHandler(Registry.HEALING_PROJECTILE.get(), (erm) -> new EmptyRenderer(erm));
         RenderingRegistry.registerEntityRenderingHandler(Registry.NECROMANCER_SPELL.get(), (erm) -> new EmptyRenderer(erm));
         RenderingRegistry.registerEntityRenderingHandler(Registry.CHANT_CASTER.get(), (erm) -> new EmptyRenderer(erm));
         ClientRegistry.bindTileEntityRenderer(Registry.HAND_TILE_ENTITY, (trd) -> new HandTileRenderer(trd));

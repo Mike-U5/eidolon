@@ -17,6 +17,7 @@ import elucent.eidolon.block.WoodenStandBlock;
 import elucent.eidolon.block.WorktableBlock;
 import elucent.eidolon.entity.BonechillProjectileEntity;
 import elucent.eidolon.entity.ChantCasterEntity;
+import elucent.eidolon.entity.HealingProjectileEntity;
 import elucent.eidolon.entity.NecromancerEntity;
 import elucent.eidolon.entity.NecromancerSpellEntity;
 import elucent.eidolon.entity.SoulfireProjectileEntity;
@@ -28,6 +29,7 @@ import elucent.eidolon.gui.WorktableContainer;
 import elucent.eidolon.item.BonechillWandItem;
 import elucent.eidolon.item.CleavingAxeItem;
 import elucent.eidolon.item.CodexItem;
+import elucent.eidolon.item.HealingWandItem;
 import elucent.eidolon.item.ItemBase;
 import elucent.eidolon.item.ReaperScytheItem;
 import elucent.eidolon.item.ReversalPickItem;
@@ -253,6 +255,7 @@ public class Registry {
     public static RegistryObject<SoundEvent>
 	    CAST_SOULFIRE_EVENT = addSound("cast_soulfire"),
 	    CAST_BONECHILL_EVENT = addSound("cast_bonechill"),
+	    CAST_HEALING_EVENT = addSound("cast_healing"),
 	    SPLASH_SOULFIRE_EVENT = addSound("splash_soulfire"),
 	    SPLASH_BONECHILL_EVENT = addSound("splash_bonechill"),
 	    BRUTE_LIVING = addSound("brute_living"),
@@ -329,6 +332,9 @@ public class Registry {
         SOULFIRE_WAND = addItem("soulfire_wand", new SoulfireWandItem(itemProps()
             .rarity(Rarity.UNCOMMON).maxStackSize(1).maxDamage(7000).setNoRepair())
             .setLore("lore.eidolon.soulfire_wand")),
+		HEALING_WAND = addItem("healing_wand", new HealingWandItem(itemProps()
+            .rarity(Rarity.UNCOMMON).maxStackSize(1).maxDamage(7000).setNoRepair())
+            .setLore("lore.eidolon.healing_wand")),
         BONECHILL_WAND = addItem("bonechill_wand", new BonechillWandItem(itemProps()
             .rarity(Rarity.UNCOMMON).maxStackSize(1).maxDamage(7000).setNoRepair())
             .setLore("lore.eidolon.bonechill_wand")),
@@ -451,10 +457,16 @@ public class Registry {
         ZOMBIE_BRUTE = addEntity("zombie_brute", 7969893, 44975, 1.2f, 2.5f, ZombieBruteEntity::new, EntityClassification.MONSTER);
     public static RegistryObject<EntityType<WraithEntity>>
         WRAITH = addEntity("wraith", 0x706e6b, 0xadacbd, 0.6f, 1.9f, WraithEntity::new, EntityClassification.MONSTER);
+    
+    public static RegistryObject<EntityType<HealingProjectileEntity>>
+    	HEALING_PROJECTILE = addEntity("healing_projectile", 0.4f, 0.4f, HealingProjectileEntity::new, EntityClassification.MISC);
+    
     public static RegistryObject<EntityType<SoulfireProjectileEntity>>
         SOULFIRE_PROJECTILE = addEntity("soulfire_projectile", 0.4f, 0.4f, SoulfireProjectileEntity::new, EntityClassification.MISC);
+    
     public static RegistryObject<EntityType<BonechillProjectileEntity>>
         BONECHILL_PROJECTILE = addEntity("bonechill_projectile", 0.4f, 0.4f, BonechillProjectileEntity::new, EntityClassification.MISC);
+    
     public static RegistryObject<EntityType<NecromancerSpellEntity>>
         NECROMANCER_SPELL = addEntity("necromancer_spell", 0.4f, 0.4f, NecromancerSpellEntity::new, EntityClassification.MISC);
     public static RegistryObject<EntityType<ChantCasterEntity>>

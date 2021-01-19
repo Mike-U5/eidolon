@@ -2,6 +2,10 @@ package elucent.eidolon.item;
 
 import java.util.UUID;
 
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.ImmutableMultimap.Builder;
+
 import elucent.eidolon.Eidolon;
 import elucent.eidolon.Registry;
 import elucent.eidolon.item.model.WarlockArmorModel;
@@ -9,25 +13,22 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class WarlockRobesItem extends ArmorItem {
+	private static final AttributeModifier WARLOCK_MOVEMENT_MODIFIER = new AttributeModifier(UUID.fromString("725a1c21-a4d9-46cd-b65e-7a074f738137"), Eidolon.MODID + ":warlock_movement_speed", 0.1F, AttributeModifier.Operation.MULTIPLY_TOTAL);
 	private static final int[] MAX_DAMAGE_ARRAY = new int[]{13, 15, 16, 11};
 
     public static class Material implements IArmorMaterial {
@@ -40,7 +41,7 @@ public class WarlockRobesItem extends ArmorItem {
         public int getDamageReductionAmount(EquipmentSlotType slot) {
             switch (slot) {
                 case CHEST:
-                    return 7;
+                    return 6;
                 case HEAD:
                     return 2;
                 case FEET:
@@ -89,7 +90,8 @@ public class WarlockRobesItem extends ArmorItem {
 
     WarlockArmorModel model = null;
 
-    @OnlyIn(Dist.CLIENT)
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	@OnlyIn(Dist.CLIENT)
     @Override
     public WarlockArmorModel getArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlotType slot, BipedModel defaultModel) {
         if (model == null) model = new WarlockArmorModel(slot);
@@ -106,5 +108,16 @@ public class WarlockRobesItem extends ArmorItem {
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
         return Eidolon.MODID + ":textures/entity/warlock_robes.png";
+    }
+    
+    @Override
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot) {
+    	if (slot == EquipmentSlotType.FEET) {
+        	final Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+        	builder.put(Attributes.MOVEMENT_SPEED, WARLOCK_MOVEMENT_MODIFIER);
+        	return builder.build();
+        }
+        
+        return super.getAttributeModifiers(slot);
     }
 }

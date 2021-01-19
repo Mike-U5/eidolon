@@ -8,8 +8,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
@@ -25,38 +23,19 @@ public class BonechillWandItem extends WandItem {
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        if (this.loreTag != null) {
-            tooltip.add(new StringTextComponent(""));
-            tooltip.add(new StringTextComponent("" + TextFormatting.DARK_PURPLE + TextFormatting.ITALIC + I18n.format(this.loreTag)));
-        }
-    }
-
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity entity, Hand hand) {
-        final ItemStack stack = entity.getHeldItem(hand);
-        if (stack.getMaxDamage() == stack.getDamage()) {
-        	return ActionResult.resultFail(stack);
-        }
+    public void castSpell(World world, PlayerEntity player, ItemStack stack) {
+    	final Vector3d pos = player.getPositionVec().add(player.getLookVec().scale(0.5)).add(0.5 * Math.sin(Math.toRadians(225 - player.rotationYawHead)), player.getHeight() * 2 / 3, 0.5 * Math.cos(Math.toRadians(225 - player.rotationYawHead)));
+        final Vector3d vel = player.getEyePosition(0).add(player.getLookVec().scale(40)).subtract(pos).scale(0.05D);
         
-        if (!entity.isSwingInProgress) {
-            if (!world.isRemote) {
-                Vector3d pos = entity.getPositionVec().add(entity.getLookVec().scale(0.5)).add(0.5 * Math.sin(Math.toRadians(225 - entity.rotationYawHead)), entity.getHeight() * 2 / 3, 0.5 * Math.cos(Math.toRadians(225 - entity.rotationYawHead)));
-                Vector3d vel = entity.getEyePosition(0).add(entity.getLookVec().scale(40)).subtract(pos).scale(1.0 / 20);
-                world.addEntity(new BonechillProjectileEntity(Registry.BONECHILL_PROJECTILE.get(), world).shoot(
-                    pos.x, pos.y, pos.z, vel.x, vel.y, vel.z, entity.getUniqueID()
-                ));
-                world.playSound(null, pos.x, pos.y, pos.z, Registry.CAST_BONECHILL_EVENT.get(), SoundCategory.NEUTRAL, 0.75f, random.nextFloat() * 0.2f + 0.9f);
-                //stack.damageItem(1, entity, (player) -> {
-                //    player.sendBreakAnimation(hand);
-                //});
-                stack.setDamage(this.getDamage(stack) + this.visPerCast()); 
-                this.putWandsOnCooldown(entity);
-            }
-            entity.swingArm(hand);
-            return ActionResult.resultSuccess(stack);
-        }
-        return ActionResult.resultPass(stack);
+        final BonechillProjectileEntity spell = new BonechillProjectileEntity(Registry.BONECHILL_PROJECTILE.get(), world);
+        spell.setPotency(getPotency(stack));
+        spell.setOccultism(getOccultism(stack));
+        world.addEntity(spell.shoot(
+            pos.x, pos.y, pos.z, vel.x, vel.y, vel.z, player.getUniqueID()
+        ));
+        
+        world.playSound(null, pos.x, pos.y, pos.z, Registry.CAST_BONECHILL_EVENT.get(), SoundCategory.NEUTRAL, 0.75f, random.nextFloat() * 0.2f + 0.9f);
+        stack.setDamage(this.getDamage(stack) + 1); 
+        this.setGlobalWandsCooldown(player);
     }
 }

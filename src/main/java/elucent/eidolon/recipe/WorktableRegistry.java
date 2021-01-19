@@ -254,5 +254,16 @@ public class WorktableRegistry {
             Registry.WRAITH_HEART.get(),
             Registry.LESSER_SOUL_GEM.get()
         }, new ItemStack(Registry.GLASS_HAND.get())).setRegistryName(Eidolon.MODID, "glass_hand"));
+        
+        register(new WorktableRecipe(new Object[]{
+                ItemStack.EMPTY, Items.GHAST_TEAR, Items.GOLDEN_APPLE,
+                ItemStack.EMPTY, Items.STICK, Items.GHAST_TEAR,
+                Registry.CRIMSON_ESSENCE.get(), ItemStack.EMPTY, ItemStack.EMPTY
+            }, new Object[]{
+                Registry.LESSER_SOUL_GEM.get(),
+                Items.GLISTERING_MELON_SLICE,
+                Items.GLISTERING_MELON_SLICE,
+                Items.GLISTERING_MELON_SLICE
+            }, new ItemStack(Registry.HEALING_WAND.get())).setRegistryName(Eidolon.MODID, "healing_wand"));
     }
 }

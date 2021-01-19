@@ -2,6 +2,7 @@ package elucent.eidolon.spell;
 
 import elucent.eidolon.Eidolon;
 import elucent.eidolon.deity.Deities;
+import elucent.eidolon.item.WandItem;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
@@ -37,6 +38,19 @@ public class Spells {
             new ResourceLocation(Eidolon.MODID, "magic_touch"),
             Signs.SACRED_SIGN, Signs.SACRED_SIGN, Signs.SACRED_SIGN
         )),
+    	WAND_IMBUE_POTENCY = register(new WandImbueSpell(
+            WandItem.PORTENCY,
+            Signs.SACRED_SIGN, Signs.WICKED_SIGN, Signs.WICKED_SIGN, Signs.SACRED_SIGN
+        )),
+		WAND_IMBUE_FRUGAL = register(new WandImbueSpell(
+            WandItem.FRUGAL,
+            Signs.SACRED_SIGN, Signs.SOUL_SIGN, Signs.SOUL_SIGN, Signs.SACRED_SIGN
+        )),
+		WAND_IMBUE_OCCULTISM = register(new WandImbueSpell(
+            WandItem.OCCULTISM,
+            Signs.SACRED_SIGN, Signs.MIND_SIGN, Signs.MIND_SIGN, Signs.SACRED_SIGN
+        )),
+    	
         DARK_PRAYER = register(new PrayerSpell(
             new ResourceLocation(Eidolon.MODID, "dark_prayer"),
             Deities.DARK_DEITY,

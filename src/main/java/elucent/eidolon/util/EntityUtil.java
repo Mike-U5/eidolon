@@ -22,6 +22,11 @@ public class EntityUtil {
         return entity != null && owner != null && isEnthralled(entity) && entity.getPersistentData().getUniqueId(THRALL_KEY).equals(owner.getUniqueID());
     }
     
+    public static boolean hasWizardHat(final LivingEntity entity) {
+    	final Item hat = entity.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem();
+    	return hat == Registry.WARLOCK_HAT.get() || hat == Registry.TOP_HAT.get();
+    }
+    
     public static float getItemWarding(Item item) {
     	// WARLOCK
     	if (item == Registry.WARLOCK_HAT.get() || item == Registry.TOP_HAT.get()) {

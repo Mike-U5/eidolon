@@ -16,7 +16,8 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 public abstract class SpellProjectileEntity extends Entity {
     protected UUID casterId = null;
-    protected boolean wraithSpell = false;
+    protected boolean noGravity = false;
+    protected boolean hitEntity = false;
     protected int potency = 0;
     protected int occultism = 0;
 
@@ -32,16 +33,24 @@ public abstract class SpellProjectileEntity extends Entity {
         return this;
     }
 
-    public void setWraithSpell() {
-    	this.wraithSpell = true;
+    public void setNoGravity() {
+    	this.noGravity = true;
+    }
+    
+    public void setPotency(final int potency) {
+    	this.potency = potency;
+    }
+    
+    public void setOccultism(final int occultism) {
+    	this.occultism = occultism;
     }
 
     @Override
     public void tick() {
     	final Vector3d motion = getMotion();
 
-    	if (wraithSpell) {
-    		setMotion(motion.x, (motion.y > 0 ? motion.y : motion.y) - 0.005f, motion.z);
+    	if (noGravity) {
+    		setMotion(motion.x, (motion.y > 0 ? motion.y : motion.y) - 0.001f, motion.z);
     	} else {
     		setMotion(motion.x * 0.96, (motion.y > 0 ? motion.y * 0.96 : motion.y) - 0.03f, motion.z * 0.96);
     	}
@@ -63,25 +72,35 @@ public abstract class SpellProjectileEntity extends Entity {
         prevPosZ = pos.z;
         setPosition(pos.x + motion.x, pos.y + motion.y, pos.z + motion.z);
     }
+    
 
-    protected abstract void onImpact(RayTraceResult ray, LivingEntity target);
+    protected void onImpact(RayTraceResult ray, LivingEntity target) {
+    	this.hitEntity = true;
+    }
+    
     protected abstract void onImpact(RayTraceResult ray);
 
     @Override
     protected void registerData() {
-        //
+        // Nothing to register
     }
 
     @Override
     protected void readAdditional(CompoundNBT compound) {
         this.casterId = compound.contains("caster") ? compound.getUniqueId("caster") : null;
-        this.wraithSpell = compound.contains("wraithSpell") ? compound.getBoolean("wraithSpell") : false;
+        this.noGravity = compound.contains("noGravity") ? compound.getBoolean("noGravity") : false;
+        this.hitEntity = compound.contains("hitEntity") ? compound.getBoolean("hitEntity") : false;
+        this.potency = compound.contains("potency") ? compound.getInt("potency") : 0;
+        this.occultism = compound.contains("occultism") ? compound.getInt("occultism") : 0;
     }
 
     @Override
     protected void writeAdditional(CompoundNBT compound) {
         if (this.casterId != null) compound.putUniqueId("caster", this.casterId);
-        compound.putBoolean("wraithSpell", this.wraithSpell);
+        compound.putBoolean("noGravity", this.noGravity);
+        compound.putBoolean("hitEntity", this.hitEntity);
+        compound.putInt("potency", this.potency);
+        compound.putInt("occultism", this.occultism);
     }
 
     @Override

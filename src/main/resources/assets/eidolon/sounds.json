@@ -9,6 +9,11 @@
 		"subtitle": "eidolon.subtitle.cast_bonechill",
 		"sounds": ["eidolon:cast_bonechill"]
 	},
+	"cast_healing": {
+		"category": "neutral",
+		"subtitle": "eidolon.subtitle.cast_healing",
+		"sounds": ["eidolon:cast_healing"]
+	},
 	"splash_soulfire": {
 		"category": "neutral",
 		"subtitle": "eidolon.subtitle.splash_soulfire",
