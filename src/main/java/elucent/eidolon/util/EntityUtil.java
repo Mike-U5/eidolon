@@ -54,7 +54,7 @@ public class EntityUtil {
     	if (item == ForeignItems.IRONWOOD_BOOTS) {
     		return 0.04F;
     	}
-    	
+		
     	// Naga 
     	if (item == ForeignItems.NAGA_CHESTPLATE) {
     		return 0.2F;

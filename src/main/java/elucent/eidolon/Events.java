@@ -21,6 +21,7 @@ import elucent.eidolon.ritual.Ritual;
 import elucent.eidolon.spell.Signs;
 import elucent.eidolon.tile.GobletTileEntity;
 import elucent.eidolon.util.EntityUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.LivingEntity;
@@ -264,23 +265,29 @@ public class Events {
 
 	@SubscribeEvent
 	public void onLivingHurt(LivingHurtEvent event) {
-		if (event.getSource().getTrueSource() instanceof LivingEntity && this.isMagical(event.getSource())) {
-			final LivingEntity attacker = (LivingEntity) event.getSource().getTrueSource();
-
-			// Warlock Hat Damage boosts the power of wither
-			if (attacker.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() instanceof WarlockRobesItem && event.getSource() == DamageSource.WITHER) {
-				event.setAmount(event.getAmount() * 1.5F);
-			}
-
+		if (event.getEntityLiving() instanceof PlayerEntity) {
+			Minecraft.getInstance().player.sendChatMessage(event.getSource().getDamageType());
+		}
+		
+		if (this.isMagical(event.getSource())) {
 			// Warding Damage Reduction
 			final float oldDmg = event.getAmount();
 			final float mod = EntityUtil.getWardingMod(event.getEntityLiving());
 			final float newDmg = oldDmg * mod;
 			event.setAmount(newDmg);
-
-			// Warlock Body Sapping Boost
-			if (attacker.getItemStackFromSlot(EquipmentSlotType.CHEST).getItem() instanceof WarlockRobesItem && event.getSource().getDamageType() == DamageSource.WITHER.getDamageType()) {
-				attacker.heal(event.getAmount() / 2);
+			
+			if (event.getSource().getTrueSource() instanceof LivingEntity) {
+				final LivingEntity attacker = (LivingEntity) event.getSource().getTrueSource();
+				
+				// Warlock Hat Damage boosts the power of wither
+				if (attacker.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() instanceof WarlockRobesItem && event.getSource() == DamageSource.WITHER) {
+					event.setAmount(event.getAmount() * 1.5F);
+				}	
+				
+				// Warlock Body Sapping Boost
+				if (attacker.getItemStackFromSlot(EquipmentSlotType.CHEST).getItem() instanceof WarlockRobesItem && event.getSource().getDamageType() == DamageSource.WITHER.getDamageType()) {
+					attacker.heal(event.getAmount() / 2);
+				}
 			}
 		}
 	}

@@ -35,15 +35,15 @@ public class BonechillProjectileEntity extends SpellProjectileEntity {
             double lerpZ = MathHelper.lerp(i / 8.0f, prevPosZ, pos.z);
             Particles.create(Registry.WISP_PARTICLE)
                 .addVelocity(-norm.x, -norm.y, -norm.z)
-                .setAlpha(0.0625f, 0).setScale(0.625f, 0)
+                .setAlpha(0.0625f, 0).setScale(0.937f, 0)
                 .setColor(0.875f, 1, 1, 0.375f, 0.5f, 0.75f)
                 .setLifetime(5)
                 .spawn(world, lerpX, lerpY, lerpZ);
             Particles.create(Registry.WISP_PARTICLE)
                 .addVelocity(-norm.x, -norm.y, -norm.z)
-                .setAlpha(0.125f, 0).setScale(0.25f, 0.125f)
+                .setAlpha(0.125f, 0).setScale(0.375f, 0.187f)
                 .setColor(1, 0.75f, 0.875f, 0.375f, 0.5f, 0.75f)
-                .setLifetime(20)
+                .setLifetime(10)
                 .spawn(world, lerpX, lerpY, lerpZ);
         }
     }
