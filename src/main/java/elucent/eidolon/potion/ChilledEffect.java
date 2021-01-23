@@ -45,7 +45,6 @@ import net.minecraftforge.fml.network.PacketDispatcher;
 import net.minecraftforge.fml.network.PacketDistributor;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 
-import javax.annotation.Resource;
 import java.util.Random;
 
 public class ChilledEffect extends Effect implements IForgeEffect {

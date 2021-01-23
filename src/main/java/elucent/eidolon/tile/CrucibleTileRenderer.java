@@ -28,8 +28,6 @@ import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.biome.BiomeColors;
 
-import javax.annotation.Resource;
-
 public class CrucibleTileRenderer extends TileEntityRenderer<CrucibleTileEntity> {
     private final ModelRenderer stirrer;
     public static final ResourceLocation STIRRER_TEXTURE = new ResourceLocation(Eidolon.MODID, "textures/block/crucible_stirrer.png");

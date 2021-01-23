@@ -4,7 +4,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ResourceLocation;
 
-import javax.annotation.Resource;
 
 import elucent.eidolon.Registry;
 

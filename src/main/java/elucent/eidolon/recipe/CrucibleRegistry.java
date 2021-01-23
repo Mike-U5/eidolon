@@ -21,7 +21,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.Tags;
 
-import javax.annotation.Resource;
 import java.util.*;
 
 public class CrucibleRegistry {
